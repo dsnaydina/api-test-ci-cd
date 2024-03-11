@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Register Copy",
+			"name": "Register USER",
 			"event": [
 				{
 					"listen": "test",
