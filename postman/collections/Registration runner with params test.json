@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "c3a2a0ce-2c1e-4b72-8dd6-cdf8c454e5ea",
+		"name": "Registration runner with params test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "25620819-c3a2a0ce-2c1e-4b72-8dd6-cdf8c454e5ea"
+	},
+	"item": [
+		{
+			"name": "Register Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "539bc9be-6fc2-496d-9a83-e4b7fbf84155",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body contains the correct message\", function () {",
+							"    var jsonData = pm.response.json(); // This parses the response body as JSON",
+							"    pm.expect(jsonData.message).to.eql(\"User registered successfully\"); // This asserts that the 'message' field equals the expected string",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9d2d6381-80ea-4f85-ab7a-9c8380725da9",
+						"exec": [
+							"// Generate random username and password",
+							"let username = 'user' + Math.floor(Math.random() * 100000) + 'qatest';",
+							"let password = 'pass' + Math.floor(Math.random() * 100000);",
+							"",
+							"// Set them as environment variables",
+							"pm.environment.set('username', username);",
+							"pm.environment.set('password', password);",
+							"",
+							"// Log the values (optional, for debugging purposes)",
+							"console.log('Username:', username, 'Password:', password);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "df10d650-b699-4f22-ae6c-8cbd5fac7402",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\",\n    \"email\": \"Test4@example.com\",\n    \"firstName\": \"Test4\",\n    \"lastName\": \"Test4\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}register",
+					"host": [
+						"{{baseUrl}}register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3c07ca9b-2002-4d68-b8db-d55ea2c7b29d",
+						"exec": [
+							"pm.test(\"Save token as a collection-level variable\", function () {",
+							"    var jsonData = pm.response.json(); // Parse the response body as JSON",
+							"    var token = jsonData.token; // Extract the token from the response",
+							"    pm.collectionVariables.set(\"token\", token); // Save the token as a collection-level variable",
+							"    pm.expect(token).to.be.a('string'); // Optionally, assert that the token is a string (as a sanity check)",
+							"});",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "2d1e710e-219d-4a81-aeaf-cf975cb2a576",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}login",
+					"host": [
+						"{{baseUrl}}login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "fff4cbce-c060-48b9-ad66-1b3cf2a2e5a4",
+			"key": "token",
+			"value": ""
+		}
+	]
+}
